@@ -1,0 +1,47 @@
+﻿@page "/"
+<PageTitle >FlexGrid (Unbound)</PageTitle>
+<h1>FlexGrid Unbound Mode</h1>
+
+@*
+<a href="/treeview">TreeView</a>*@
+
+<FlexGrid @ref="grid" AllowDragging="GridAllowDragging.Both" HeadersVisibility="GridHeadersVisibility.All" >
+    <FlexGridColumns>
+        @for (int i = 0; i < 5; i++)
+        {
+            <GridColumn Header="@string.Format("Column {0}",i+1)" ></GridColumn>
+        }
+    </FlexGridColumns>
+    <FlexGridRows>
+        @for (int i = 0; i < 5; i++)
+        {
+            <GridRow></GridRow>
+        }
+    </FlexGridRows>
+</FlexGrid>
+
+
+@code {
+    FlexGrid? grid;   
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            PopulateUnboundGrid();
+        }
+    }
+    private void PopulateUnboundGrid()
+    {
+        if (grid != null)
+        {
+             // populate the unbound grid with some stuff
+            for (int r = 0; r < grid.Rows.Count; r++)
+            {
+                for (int c = 0; c < grid.Columns.Count; c++)
+                {
+                    grid[r, c] = string.Format("cell [{0},{1}]", r, c);
+                }
+            }
+        }
+    }
+}

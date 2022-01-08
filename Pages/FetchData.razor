@@ -1,0 +1,37 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@using C1.Blazor.Grid
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FlexGrid ItemsSource="@forecasts" AllowDragging="GridAllowDragging.Columns" HeadersVisibility="GridHeadersVisibility.All">
+   </FlexGrid>
+    
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
